@@ -65,7 +65,7 @@ For example, we have a controller named AssignCaseToDealerController, the test c
 **Rule 11**. Use a plural noun to name a collection 
 
 For example,  
-```ruby
+```java
 Set<Id> accountIds = new Set<Id>(); 
 ```
 ## Comments
@@ -73,7 +73,7 @@ Set<Id> accountIds = new Set<Id>();
 **Rule 1**. Each class/trigger shall contain a header block. 
 
 The description should include useful information about what it is, why you created it, and any  known issues or dependencies: 
-```ruby
+```java
 /**
 * @description : Description of the class
 * @author : Author Name
@@ -95,7 +95,7 @@ Use // instead of /\* \*/ if the comments is a single line.
 **Rule 5**. Write necessary comments, not redundant or noisy. 
 
 For example, everybody knows that is a default constructor: 
-```ruby
+```java
 public class Whatever{
 
    //default constructor  
@@ -122,7 +122,7 @@ For some reason, we need to comment some lines out when coding Please remember t
 **Rule 1**, Put the opening brace “{“ to a new line. 
 
 Java developers used to put the opening brace in the same line of the block definition, like: 
-```ruby
+```java
 public class Whatever{
    //not recommended  
 }
@@ -130,7 +130,7 @@ public class Whatever{
 
 This is not about right or wrong, but we make an agreement to put it to the next line, like:  
 
-```ruby
+```java
 public class Whatever
 { 
 	//recommended  
@@ -160,7 +160,7 @@ Use blank spaces properly as betrayed in the following table:
 
 **Example:**  
 
-```ruby
+```java
 a = b + c; // right  
 
 a=b+c; // wrong  
@@ -171,11 +171,11 @@ a = (a == null) ? 0 : a; // right
 
 a = (a == null)?0:a; // wrong  
 
-for (i = 0; i < 10; i++) /// right  
+for (i = 0; i < 10; i++) // right  
 
-for(i=0;i<10;i++) /// wrong  
+for(i=0;i<10;i++) // wrong  
 
-for (i = 0; i < 10; i ++) /// wrong 
+for (i = 0; i < 10; i ++) // wrong 
 
 a = -- b; // wrong  
 
@@ -185,7 +185,7 @@ a = - b; // wrong
 
 a = -b; // right  
 
-public String Name{get;set;} /// wrong  
+public String Name{get;set;} // wrong  
 public String Name { get; set; } // right 
 ```
  
@@ -194,7 +194,7 @@ public String Name { get; set; } // right
 **Rule 4**. All flow control primitives (if, else, while, for, do, switch) shall be followed by a block, even if it is empty. 
 
 Example: 
-```ruby
+```java
 If () {}
 ```
 
@@ -204,10 +204,11 @@ If () {}
 **Rule 1:** 
 The SOQL keywords should be in UPPERCASE for example.
 
-```ruby
-[SELECT Id, Name FROM Account WHERE Website = 'Test'] ##Recommended
+```java
+[SELECT Id, Name FROM Account WHERE Website = 'Test'] //Recommended
 
-[select Id, Name From Account where Website = 'Test'] ##Not Recommended
+[select Id, Name From Account where Website = 'Test'] 
+//Not Recommended
 ```
 
 **Rule 2:** 
@@ -219,17 +220,17 @@ The Query should contain a valid *Where clause* condition to minimize the record
 **Rule 4:** 
 It is not recommended to store the Query resulted records in a list directly if there can be lots of records. It will impact the heap size and may terminate the transaction. A better way would be to use Query as the Value parameter of the forEach loop.
 
-```ruby
-##Not Recommend
+```java
+//Not Recommend
 List<Account> acctList = [SELECT Id FROM Account]; 
 for( Account acct : acctList ){
-	##Process here
+	//Process here
 }
 
 
-##Recommend
+//Recommend
 for( Account acct : [SELECT Id FROM Account] ){
-	##Process here
+	//Process here
 }
 ```
 
@@ -239,12 +240,12 @@ Avoid querying fields that are of no use for your logic. It will increase the Tr
 **Rule 6:** 
 Utilize child queries instead of Querying child records in another Query.
 
-```ruby
-##Not Recommend
+```java
+//Not Recommend
 List<Account> acctList = [SELECT Id, Name FROM Account];
 List<Opportunity> oppList = [SELECT Id, Name FROM     Opportunity WHERE Account Id IN: acctList];		
 
-##Recommend
+//Recommend
 List<Account> acctList = [ SELECT Id, Name
 						 ( SELECT Id FROM Opportunities )
 						   FROM Account ];
