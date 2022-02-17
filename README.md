@@ -242,11 +242,80 @@ Utilize child queries instead of Querying child records in another Query.
 
 ```java
 //Not Recommend
-List<Account> acctList = [SELECT Id, Name FROM Account];
-List<Opportunity> oppList = [SELECT Id, Name FROM     Opportunity WHERE Account Id IN: acctList];		
+List<Account> acctList = [ SELECT Id, Name FROM Account ];
+List<Opportunity> oppList = [ SELECT Id, Name 
+							  FROM Opportunity 
+							  WHERE Account Id IN: acctList];		
 
 //Recommend
 List<Account> acctList = [ SELECT Id, Name
 						 ( SELECT Id FROM Opportunities )
 						   FROM Account ];
+```
+
+**Rule 7:** 
+Maintain the spaces
+
+```java
+
+//Recommend
+[ SELECT Id, Name FROM Account Where Id IN: keySet() ];
+
+//Not Recommend
+[SELECT Id,Name FROM Account Where Id IN:keyset()];
+
+```
+
+## Trigger Standards
+
+**Rule 1:**
+Keep the one Trigger per Object structure. Create a Trigger Handler class that further process the business logics.
+
+**Rule 2:**
+Keep Trigger clean. Keep as less logic as possible inside Trigger file and move all logic into TriggerHandler and Service classes.
+
+**Rule 3:**
+Trigger Name should follow Naming convention like:
+
+> 'Trigger'+ObjectName<br/>
+>  For Example TriggerOpportunity or TriggerAccount
+
+**Rule 4:**
+Trigger should have separate If sections for each session. For example
+
+```java
+
+if( Trigger.isBefore ){
+
+	if( Trigger.isInsert ){
+		//Call all Before Insert Methods here
+	}
+
+	if( Trigger.isUpdate ){
+		//Call all Before Insert Methods here
+	}
+
+	if( Trigger.isDelete ){
+		//Call all Before Insert Methods here
+	}
+
+}
+
+if( Trigger.isAfter ){
+
+	if( Trigger.isInsert ){
+		//Call all After Insert Methods here
+	}
+
+	if( Trigger.isUpdate ){
+		//Call all After Insert Methods here
+	}
+
+	if( Trigger.isDelete ){
+		//Call all After Insert Methods here
+	}
+
+}
+
+
 ```
