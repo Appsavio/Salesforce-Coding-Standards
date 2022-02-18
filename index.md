@@ -201,14 +201,11 @@ If () {}
 //Not Recommended
 ```
 
-**Rule 2:** 
-It is recommended to have a single query on an Object in a Single piece of code. The developer should get the records to be used at once and store them in containers accordingly. 
+- It is recommended to have a single query on an Object in a Single piece of code. The developer should get the records to be used at once and store them in containers accordingly. 
 
-**Rule 3:** 
-The Query should contain a valid *Where clause* condition to minimize the records returned from the query. The more records Query returns the more time Apex transaction will take. Also, there's a limit of 50000 records returned per Query. So it's better to filter data as much as possible in the Query itself.
+- The Query should contain a valid *Where clause* condition to minimize the records returned from the query. The more records Query returns the more time Apex transaction will take. Also, there's a limit of 50000 records returned per Query. So it's better to filter data as much as possible in the Query itself.
 
-**Rule 4:** 
-It is not recommended to store the Query resulted records in a list directly if there can be lots of records. It will impact the heap size and may terminate the transaction. A better way would be to use Query as the Value parameter of the forEach loop.
+- It is not recommended to store the Query resulted records in a list directly if there can be lots of records. It will impact the heap size and may terminate the transaction. A better way would be to use Query as the Value parameter of the forEach loop.
 
 ```java
 //Not Recommend
@@ -224,11 +221,9 @@ for( Account acct : [SELECT Id FROM Account] ){
 }
 ```
 
-**Rule 5:** 
-Avoid querying fields that are of no use for your logic. It will increase the Transaction time and Heap memory with unnecessary data.
-
-**Rule 6:** 
-Utilize child queries instead of Querying child records in another Query.
+ - Avoid querying fields that are of no use for your logic. It will increase the Transaction time and Heap memory with unnecessary data.
+ 
+ - Utilize child queries instead of Querying child records in another Query.
 
 ```java
 //Not Recommend
@@ -243,8 +238,7 @@ List<Account> acctList = [ SELECT Id, Name
 			   FROM Account ];
 ```
 
-**Rule 7:** 
-Maintain the spaces
+ - Maintain the spaces
 
 ```java
 
@@ -262,7 +256,7 @@ To keep the code sophisticated and easy to maintained developers should write th
 
 The General structure for coding is below:
 
-
+![enter image description here](static%5Cimages%5CcodingStructure.png)
 
 ## Trigger Standards
 
