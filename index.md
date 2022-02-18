@@ -256,7 +256,7 @@ To keep the code sophisticated and easy to maintained developers should write th
 
 The General structure for coding is below:
 
-![enter image description here](static%5Cimages%5CcodingStructure.png)
+![enter image description here](static/images/codingStructure.png)
 
 ## Trigger Standards
 
