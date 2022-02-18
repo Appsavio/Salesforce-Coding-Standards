@@ -244,13 +244,13 @@ Utilize child queries instead of Querying child records in another Query.
 //Not Recommend
 List<Account> acctList = [ SELECT Id, Name FROM Account ];
 List<Opportunity> oppList = [ SELECT Id, Name 
-							  FROM Opportunity 
-							  WHERE Account Id IN: acctList];		
+			      FROM Opportunity 
+			      WHERE Account Id IN: acctList];		
 
 //Recommend
 List<Account> acctList = [ SELECT Id, Name
-						 ( SELECT Id FROM Opportunities )
-						   FROM Account ];
+			 ( SELECT Id FROM Opportunities )
+			   FROM Account ];
 ```
 
 **Rule 7:** 
