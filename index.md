@@ -258,7 +258,102 @@ The General structure for coding is below:
 
 ![enter image description here](static/images/codingStructure.png)
 
-## Trigger Standards
+
+## Trigger
+The Apex Trigger should contain only the Trigger session logics ( After, Before, Insert Update ). It should not contain any business-related logic. Based on different sessions the trigger should call the methods or the TriggerHandler class.
+
+```java
+trigger TriggerAccount on Account{
+
+	if( Trigger.isBefore ){
+		if( Trigger.isInsert ){
+			AccountTriggerHandler.setAccountAge( Trigger.Name );
+		}
+	}
+	if( Trigger.isAfter ){
+		if( Trigger.isInsert ){
+			AccountTriggerHandler.createAccountContacts( Trigger.Name );
+		}
+	}
+		
+
+}
+```
+
+## TriggerHandler
+To handle the Data to be inserted or modified developers should create a TriggerHandler class. TriggerHandler should have separate methods for each functionality and should be called from Trigger inappropriate conditions.  TriggerHandlers should call the methods from the Object Specific Service Class method that contains all the business logic. It is not recommended to have any DML in TriggerHandler class. An example of TriggerHandler is as follows:
+
+```java
+public class AccountTriggerHandler{
+	
+	public static void setAccountAge( List<Account> newAccounts ){
+		List<Account> acctList = new List<Account>();
+		for( Account acct : newAccounts ){
+			if( acct.Email != null ){
+				acctList.add( acct );
+			}
+		}
+		AccountService.setAccountAge( acctList );
+	}
+	
+	public static void createAccountContacts( List<Account> newAccounts ){
+		AccountService.createAccountContacts( newAccounts );
+	}
+}
+```
+
+## ObjectService class
+The Object Service class contains all the business logic for the object. This class is named after the sObject name. For example, AccountService will contain all the logic for happening on the Account object same for other standard and custom objects. This makes it easy to find and resolve the issues and also keeps the code clean and structured. An example of a Service class is given below:
+
+```java
+public class AccountService{
+	
+	public static void setAccountAge( List<Account> newAccounts ){
+		//Business logics here
+	}
+	
+	public static void createAccountContacts( List<Account> newAccounts ){
+		//Business logics here
+	}
+}
+```
+
+## ObjectSelector class
+The selector classes contain all the queries for the specific objects. For example, the AccountSelector class will contain all the SOQL happening on the Account object in this org. Then this method should be called from different classes. This class layer helps to detect the Governer limits spend and resolve them. It helps developers to monitor easily which queries they are using and also helps in Code reusability. An example for Selector class is as follows.
+
+```java
+public class AccountSelector{
+
+	//Following method can be called from Service or Controller class.
+	public static List<Account> getAccountsById( Set<Id> accIds ){
+		return [ SELECT Id, Name, Website FROM Account WHERE Id IN: accIds ];
+	}	
+
+}
+```
+
+## Controller class
+Controller classes are created specifically for Lightning Components and Vifsualforce pages. These classes contain the component-specific logic but as far as business-related logic is considered controller classes call the methods from the Service classes to perform DML on records. It is not recommended to have DMLs in Controller classes. Following is an example for the Controller class structure.
+
+```java
+
+public class AccountPageController{
+	
+	@AuraEnabled
+	public static List<Account> getAccountDetails( Set<Id> accIds ){
+		return AccountSelector.getAccountsById( accIds );
+	}
+
+	@AuraEnabled
+	public static void updateAccounts( List<Account> acctList ){
+		AccountService.updateAccounts( acctList );
+	} 
+
+}
+
+```
+
+# Trigger Standards
 
 - Keep the one Trigger per Object structure. Create a Trigger Handler class that further processes the business logic.
 
