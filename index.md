@@ -355,7 +355,11 @@ public class AccountPageController{
 
 # Trigger Standards
 
-- Keep the one Trigger per Object structure. Create a Trigger Handler class that further processes the business logic.
+- If the purpose of trigger is to Update fields of the Same object on which Trigger is written, always write code in Before Trigger context.
+
+- If a related Object is to be inserted or modified, write your code in After Trigger context.
+
+- Keep the one Trigger per Object. Create a Trigger Handler class that further processes the business logic.
 
 - Keep Trigger clean. Keep as less logic as possible inside the Trigger file and move all logic into TriggerHandler and Service classes.
 
@@ -408,5 +412,89 @@ if( Trigger.isAfter ){
 This will keep the Trigger logic easier to implement and maintain.
 
 - It is recommended to have custom settings to disable and enable the Triggers manually or programmatically.
+
+
+# Apex Batch Standards
+
+- Get most of the reusable data in the Start method of your batch class instead of doing the same thing in Execute method.
+
+- It is recommended to return QueryLocator instead of queried records from the Start method as Query locator can get more records ( 50 million ).
+
+- Only implement interfaces like Database.Stateful or Database.Callout when they are actually required in code.
+  
+- It is recommend to keep the batch class Public instead of Global.
+  
+- Unless the batch processing time is too high, always try to run Batch with Batch Size 1.
+
+- It is recommended to log the total records processed/Failed inside the Batch Finish method.
+
+# Flow Standards
+
+- Trigger Flow's After and Before context should follow the same rules as Apex Trigger context.
+
+- If the Flow is Before then don't use the DML Action on the same object instead use the Assignment Action and just assign values inside the **Record variable**.
+
+- It is recommended to keep the Flow easy to read and analyse.
+
+- If a Flow logic is common and can utilized in other flows then please create Separate flow with the Logic and use it as SubFlow inside your main Flow.
+
+- If Flow has lots of components then break the flow into different Small flows and use them in a Single flow as SubFlows. It will make the Flow easy to read and maintain.
+
+- There should be only one Record Trigger flow for one Object for one Context. Naming conventions should be like below Account flow example:
+  - AccountBeforeFlow
+  - AccountAfterFlow
+  
+
+- It is recommended to have a Success screen as last screen of a Screen flow.
+  
+- It is recommended to have Description on every Action block used. It will work just like we do comments in code.
+
+- Don't use Hardcoded Ids in the flow.
+
+- Flows has 2000 elements execution limit. For example if developer is looping over 1000 records and there are four Action elements used like Decision, Assignment, DML, loop element. Then total element execution limit will be 1000*4 = 4000 which will exceed the limit and throw error.
+
+- Make sure your formulas are not very complex. Formulas are calculated at runtime and can make your Flow run slow.
+
+- Proper error handling is must in all type of Flows. Use fault paths and show appropriate error messages.
+
+- Screen flows have different context to run code( Enforcing Sharing, Without Enforcing Sharing, System Mode ). Make sure you are using appropriate context.
+
+<br/>
+
+# VS Code Must Have Extensions
+
+## <a href="https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd">APEX PMD</a>
+Apex PMD will provide useful tips about how you can optimize the code and make it better. 
+
+## <a href="https://marketplace.visualstudio.com/items?itemName=VignaeshRamA.sfdx-package-xml-generator">Salesforce Package XML generator</a>
+This extension will help to create Package.xml file with various Salesforce Metadata elements. It provides a rich UI that makes it convenient to create desired package xml files that can be used in Deployments.
+
+## <a href="https://marketplace.visualstudio.com/items?itemName=allanoricil.salesforce-soql-editor">Salesforce Query Editor</a>
+If you don't like to Open developer whenever you want to query some records, you may like this extension. It will rich UI for Building your Query and show the returned records in a tabular format.
+
+## <a href="https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify">Beautify</a>
+
+Beautify provides code formatting natively for JS, HTML and CSS. Other than these languages it can be utilized for Apex and Visualforce as well. Apex can be formatted as per javascript standards. This extension doesn't require any extra installation or configurations.
+
+## Snippets Extensions
+These extensions will help you by providing auto completion for your code syntax. Following are some recommendations:
+- <a href="https://marketplace.visualstudio.com/items?itemName=Audibene.salesforcecodesnippets">Code Snippets for Salesforce</a>
+  
+- <a href="https://marketplace.visualstudio.com/items?itemName=geyao.html-snippets">HTML Snippets</a>
+  
+- <a href="https://marketplace.visualstudio.com/items?itemName=xabikos.JavaScriptSnippets">Javascript Code Snippets</a>
+
+## Other recommended Extensions:
+- <a href="https://marketplace.visualstudio.com/items?itemName=SanjayRathore.quick-salesforce-apex-class">Quick Salesforce Apex Class</a>
+
+- <a href="https://marketplace.visualstudio.com/items?itemName=HugoOM.sfdx-autoheader">Salesforce Documenter</a>
+
+- <a href="https://marketplace.visualstudio.com/items?itemName=AyuSharma-dev.salesforce-md-info">Salesforce Metadata Info</a>
+
+- <a href="https://marketplace.visualstudio.com/items?itemName=AyuSharma-dev.salesforce-testsuite-manager">Salesforce TestSuite Manager</a>
+
+- <a href="https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker">Code Spell Checker</a>
+
+- <a href="https://marketplace.visualstudio.com/items?itemName=AyuSharma-dev.jsontoapex">JSON To APEX</a>
 
 
