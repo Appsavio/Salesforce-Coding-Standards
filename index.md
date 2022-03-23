@@ -428,6 +428,95 @@ This will keep the Trigger logic easier to implement and maintain.
 
 - It is recommended to log the total records processed/Failed inside the Batch Finish method.
 
+# Apex Test Class Standards
+
+- Test classes Naming conventions should be like below examples:
+  - AccountTriggerHandlerTest
+  - AccountServiceTest
+  - AccountControllerTest
+  - LeadUpdateBatchTest
+
+- Apex Test class should be Private and Without sharing.
+
+```java
+@isTest
+private class AccountServiceTest{
+
+}
+```
+  
+- It is recommend to not use **SeeAllData=True** in test classes unless its the last option. Using this will make test classes run on bigger volume of data and also impact the data security.
+
+- The required Test Data should be inserted in the **@TestSetup** method and then should be quired in various test methods to pass in methods. Test setup method is called before every Test Method and provides a fresh data to process.
+
+```java
+@isTest
+private class AccountServiceTest{
+	
+	@TestSetup
+	static void createData(){
+
+		Account acct = new Account( Name = 'Test Account' );
+		insert acct;
+		//Further records insertion below
+	}
+
+}
+```
+
+- Test class should have different Method for each functionality. For example if you have two method in your AccountTriggerHandler, One updates the Account Website and another one creates a child opportunity then your Test Class should have two Test Methods one for each.
+
+```java
+	@TestMethod
+	static void accountWebsiteUpdateTest(){
+		//Logic to test Website test
+	}
+
+	@TestMethod
+	static void accountOpportunityInsertTest(){
+		//Logic to test Opportunity Insert
+	}
+```
+
+- Make sure you call the code to be tested inside the Test.startTest() and Test.stopTest(). This will make your test ignore the System limits and run your code in Test context.
+
+```java
+	@TestMethod
+	static void accountWebsiteUpdateTest(){
+		Account acct = [SELECT Id FROM Account LIMIT 1];
+
+		Test.startTest();
+			AccountService.accountWebsiteUpdate( acct );
+		Test.stopTest();
+	}
+```
+
+- Test class Test methods should contain System asserts to check if the functionality is working or not. Test class should not be created only for the coverage. It should contain proper validation of each functionality performing by the testing code. System asserts should always be after the Test.stopTest(), this will make sure your asserts run after all the asynchronous transactions are ended.
+
+```java
+	@TestMethod
+	static void accountWebsiteUpdateTest(){
+		Account acct = [ SELECT Id FROM Account LIMIT 1 ];
+
+		Test.startTest();
+			AccountService.accountWebsiteUpdate( acct );
+		Test.stopTest();
+
+		Account updatedAccount = [ SELECT Id, Website FROM Account WHERE Id =: acct.Id ];
+
+		System.assertEquals( 'myTestWebsite.com', updatedAccount.Website, 'Provide Error message here is assert fails' );
+	}
+```
+
+- If your Testing code tests bulkified data then create atleast 200 records to test in Test Setup method.
+
+- It is recommended to create a separate TestDataFactory class that has code to create the records of various SObjects and call its methods inside your TestSetup or TestMethods.
+
+- It is recommended to have atleast 85% coverage of the main class.
+
+- Create logics in your test class to cover all If and Else blocks.
+
+
 # Flow Standards
 
 - Trigger Flow's After and Before context should follow the same rules as Apex Trigger context.
