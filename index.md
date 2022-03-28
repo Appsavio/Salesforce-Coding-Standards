@@ -26,6 +26,12 @@
 
 <br/><br/>
 
+<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script>
+	console.log('script Executed');
+	document.getElementById('forkme_banner').style.display = 'none';
+</script>
+
 # Naming Conventions
 - Use US-English for naming identifiers.
 
