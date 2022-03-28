@@ -1,4 +1,28 @@
-# <span style="text-align:center">Appsavio Coding Standards</span>
+<span style="text-align:center;font-size:40px">Appsavio Coding Standards</span>
+
+<br/>
+
+- [Naming Conventions](#naming-conventions)
+- [Comments](#comments)
+- [Coding style](#coding-style)
+- [SOQL Rules](#soql-rules)
+	- [Enterprise Structure](#enterprise-structure)
+	- [Trigger](#trigger)
+	- [TriggerHandler](#triggerhandler)
+	- [ObjectService class](#objectservice-class)
+	- [ObjectSelector class](#objectselector-class)
+	- [Controller class](#controller-class)
+- [Trigger Standards](#trigger-standards)
+- [Apex Batch Standards](#apex-batch-standards)
+- [Apex Test Class Standards](#apex-test-class-standards)
+- [Flow Standards](#flow-standards)
+- [VS Code Must Have Extensions](#vs-code-must-have-extensions)
+	- [<a href="https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd">APEX PMD</a>](#apex-pmd)
+	- [<a href="https://marketplace.visualstudio.com/items?itemName=VignaeshRamA.sfdx-package-xml-generator">Salesforce Package XML generator</a>](#salesforce-package-xml-generator)
+	- [<a href="https://marketplace.visualstudio.com/items?itemName=allanoricil.salesforce-soql-editor">Salesforce Query Editor</a>](#salesforce-query-editor)
+	- [<a href="https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify">Beautify</a>](#beautify)
+	- [Snippets Extensions](#snippets-extensions)
+	- [Other recommended Extensions:](#other-recommended-extensions)
 
 <br/><br/>
 
