@@ -497,12 +497,12 @@ private class AccountServiceTest{
 - Test class should have different Method for each functionality. For example if you have two method in your AccountTriggerHandler, One updates the Account Website and another one creates a child opportunity then your Test Class should have two Test Methods one for each.
 
 ```java
-	@TestMethod
+	@isTest
 	static void accountWebsiteUpdateTest(){
 		//Logic to test Website test
 	}
 
-	@TestMethod
+	@isTest
 	static void accountOpportunityInsertTest(){
 		//Logic to test Opportunity Insert
 	}
@@ -511,7 +511,7 @@ private class AccountServiceTest{
 - Make sure you call the code to be tested inside the Test.startTest() and Test.stopTest(). This will make your test ignore the System limits and run your code in Test context.
 
 ```java
-	@TestMethod
+	@isTest
 	static void accountWebsiteUpdateTest(){
 		Account acct = [SELECT Id FROM Account LIMIT 1];
 
@@ -524,7 +524,7 @@ private class AccountServiceTest{
 - Test class Test methods should contain System asserts to check if the functionality is working or not. Test class should not be created only for the coverage. It should contain proper validation of each functionality performing by the testing code. System asserts should always be after the Test.stopTest(), this will make sure your asserts run after all the asynchronous transactions are ended.
 
 ```java
-	@TestMethod
+	@isTest
 	static void accountWebsiteUpdateTest(){
 		Account acct = [ SELECT Id FROM Account LIMIT 1 ];
 
